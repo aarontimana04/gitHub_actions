@@ -3,30 +3,28 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main-2
       - main
+      - main-2
 
 jobs:
   build:
-    if: github.ref == 'refs/heads/main-2'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Build Model
-        run: echo "Building model on main-2 branch"
+        run: echo "Building model"
 
       - name: Run Tests
         run: echo "Running tests"
 
   deploy:
     needs: build
-    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Deploy Model
-        run: echo "Deploying model to production from main branch"
+        run: echo "Deploying model to production"
