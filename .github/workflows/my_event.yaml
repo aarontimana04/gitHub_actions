@@ -1,19 +1,32 @@
-name: My Event Workflow
-on:
-  pull_request:
-    types:
-      - opened
-    branches:
-      - 'main'
-jobs:
-  model-ci:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Build Model
-        run: echo "Build Model in CI Pipeline"
+name: CI/CD Pipeline
 
-  model-cd:
+on:
+  push:
+    branches:
+      - main-2
+      - main
+
+jobs:
+  build:
+    if: github.ref == 'refs/heads/main-2'
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Model
+        run: echo "Building model on main-2 branch"
+
+      - name: Run Tests
+        run: echo "Running tests"
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Deploy Model
-        run: echo "Deploy Model to AWS in CD Pipeline"
+        run: echo "Deploying model to production from main branch"
